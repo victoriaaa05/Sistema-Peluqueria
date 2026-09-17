@@ -1,0 +1,378 @@
+body {
+    background-color: #fff5f8;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+header {
+    background-color: #d94f8a;
+    color: white;
+    padding: 20px 40px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+nav a:hover {
+      color: #ffd6e7;
+}
+.bienvenida {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.bienvenida h1 {
+    font-size: 40px;
+    color: #d94f8a;
+    margin-bottom: 15px;
+}
+
+.bienvenida p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.btn-cita {
+    background-color: #d94f8a;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    font-size: 17px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.btn-cita:hover {
+    background-color: #c13d78;
+}
+.acceso {
+    background-color: white;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.acceso h2 {
+    color: #d94f8a;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.acceso p {
+    color: #555;
+    font-size: 17px;
+    margin-bottom: 25px;
+}
+
+.botones-acceso {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-principal,
+.btn-secundario {
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.btn-principal {
+    background-color: #d94f8a;
+    color: white;
+    border: 2px solid #d94f8a;
+}
+
+.btn-secundario {
+    background-color: white;
+    color: #d94f8a;
+    border: 2px solid #d94f8a;
+}
+
+.btn-principal:hover {
+    background-color: #c13d78;
+}
+
+.btn-secundario:hover {
+    background-color: #fff0f5;
+}
+.servicios {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.servicios h2 {
+    color: #d94f8a;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.subtitulo-servicios {
+    color: #666;
+    font-size: 17px;
+    margin-bottom: 35px;
+}
+
+.contenedor-servicios {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.tarjeta-servicio {
+    background-color: white;
+    width: 220px;
+    padding: 30px 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+}
+
+.tarjeta-servicio h3 {
+    color: #d94f8a;
+    margin-bottom: 15px;
+}
+
+.tarjeta-servicio p {
+    color: #555;
+    line-height: 1.5;
+}
+/* Página de registro */
+.registro {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+/* Caja del formulario */
+.formulario-registro {
+    background-color: white;
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+}
+
+/* Título */
+.formulario-registro h1 {
+    color: #d94f8a;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* Texto debajo del título */
+.formulario-registro > p {
+    color: #666;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Etiquetas */
+.formulario-registro label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+    color: #444;
+}
+
+/* Campos */
+.formulario-registro input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Cuando hacemos clic en un campo */
+.formulario-registro input:focus {
+    outline: none;
+    border-color: #d94f8a;
+}
+
+/* Botón Registrarme */
+.btn-registro {
+    width: 100%;
+    background-color: #d94f8a;
+    color: white;
+    border: none;
+    padding: 13px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-registro:hover {
+    background-color: #c13d78;
+}
+a.btn-secundario {
+    text-decoration: none;
+}
+/* Página de inicio de sesión */
+
+.login {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+.formulario-login {
+    background-color: white;
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+}
+
+.formulario-login h1 {
+    color: #d94f8a;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.formulario-login > p {
+    color: #666;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.formulario-login label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+    color: #444;
+}
+
+.formulario-login input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.formulario-login input:focus {
+    outline: none;
+    border-color: #d94f8a;
+}
+
+.btn-login {
+    width: 100%;
+    background-color: #d94f8a;
+    color: white;
+    border: none;
+    padding: 13px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background-color: #c13d78;
+}
+
+.texto-registro a {
+    color: #d94f8a;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.panel-cliente {
+    min-height: 75vh;
+    background-color: #fff5f8;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.contenido-cliente {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.contenido-cliente h1 {
+    color: #d94f8a;
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.contenido-cliente > p {
+    color: #555;
+    font-size: 18px;
+    margin-bottom: 45px;
+}
+
+
+/* Contenedor de las opciones */
+
+.opciones-cliente {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+
+/* Tarjetas */
+
+.opcion-cliente {
+    width: 280px;
+    background-color: white;
+    padding: 35px 25px;
+    border-radius: 15px;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+    transition: 0.3s;
+}
+
+.opcion-cliente h2 {
+    color: #d94f8a;
+    margin-bottom: 15px;
+}
+
+.opcion-cliente p {
+    color: #555;
+    line-height: 1.5;
+}
+
+
+/* Efecto al pasar el mouse */
+
+.opcion-cliente:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(217, 79, 138, 0.20);
+}
+.mensaje-error {
+    background-color: #ffe5ec;
+    color: #c2185b;
+    border: 1px solid #f3a6c1;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+}

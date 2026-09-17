@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Iniciar sesión - Peluquería Elegance</title>
+
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            Peluquería Elegance
+        </div>
+
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="#">Servicios</a>
+            <a href="registro.html">Registrarme</a>
+        </nav>
+    </header>
+
+
+    <section class="login">
+
+        <div class="formulario-login">
+
+            <h1>Iniciar sesión</h1>
+
+            <p>
+                Ingresa a tu cuenta para administrar tus citas.
+            </p>
+
+            <form action="LoginServlet" method="POST">
+                
+
+                <label for="correo">Correo electrónico</label>
+                <input
+                    type="email"
+                    id="correo"
+                    name="correo"
+                    required>
+
+                <label for="contrasena">Contraseña</label>
+                <input
+                    type="password"
+                    id="contrasena"
+                    name="contrasena"
+                    required>
+
+                <button type="submit" class="btn-login">
+                    Iniciar sesión
+                </button>
+                <p id="mensaje-error" class="mensaje-error" style="display: none;">
+                    Correo electrónico o contraseña incorrectos.
+                </p>
+
+            </form>
+
+            <p class="texto-registro">
+                ¿Todavía no tienes una cuenta?
+                <a href="registro.html">Regístrate aquí</a>
+            </p>
+
+        </div>
+
+    </section>
+    
+   <script>
+    const parametros = new URLSearchParams(window.location.search);
+
+    if (parametros.get("error") === "1") {
+        document.getElementById("mensaje-error").style.display = "block";
+    }
+</script>
+</body>
+</html>
