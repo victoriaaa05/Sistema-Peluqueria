@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @WebServlet("/RegistroServlet")
@@ -27,22 +28,47 @@ public class RegistroServlet extends HttpServlet {
         String correo = request.getParameter("correo");
         String contrasena = request.getParameter("contrasena");
 
-        String sql = """
+        String verificarCorreo = """
+                SELECT id_cliente
+                FROM clientes
+                WHERE correo = ?
+                """;
+
+        String insertarCliente = """
                 INSERT INTO clientes
                 (nombre, apellido, telefono, correo, contrasena)
                 VALUES (?, ?, ?, ?, ?)
                 """;
 
-        try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = Conexion.getConexion()) {
 
-            ps.setString(1, nombre);
-            ps.setString(2, apellido);
-            ps.setString(3, telefono);
-            ps.setString(4, correo);
-            ps.setString(5, contrasena);
+            // Verificar si el correo ya está registrado
+            try (PreparedStatement ps = con.prepareStatement(verificarCorreo)) {
 
-            ps.executeUpdate();
+                ps.setString(1, correo);
+
+                try (ResultSet rs = ps.executeQuery()) {
+
+                    if (rs.next()) {
+                        response.sendRedirect(
+                                "registro.html?error=correoExiste"
+                        );
+                        return;
+                    }
+                }
+            }
+
+            // Registrar al cliente
+            try (PreparedStatement ps = con.prepareStatement(insertarCliente)) {
+
+                ps.setString(1, nombre);
+                ps.setString(2, apellido);
+                ps.setString(3, telefono);
+                ps.setString(4, correo);
+                ps.setString(5, contrasena);
+
+                ps.executeUpdate();
+            }
 
             response.sendRedirect("index.html");
 

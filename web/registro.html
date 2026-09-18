@@ -34,6 +34,10 @@
             <p>
                 Regístrate para poder agendar y administrar tus citas.
             </p>
+            
+            <p id="mensaje-error" class="mensaje-error" style="display: none;">
+                Este correo electrónico ya está registrado. Intenta iniciar sesión.
+            </p>
 
             <form action="RegistroServlet" method="POST">
 
@@ -60,6 +64,14 @@
         </div>
 
     </section>
+    
+    <script>
+    const parametros = new URLSearchParams(window.location.search);
+
+    if (parametros.get("error") === "correoExiste") {
+        document.getElementById("mensaje-error").style.display = "block";
+    }
+    </script>
 
 </body>
 </html>

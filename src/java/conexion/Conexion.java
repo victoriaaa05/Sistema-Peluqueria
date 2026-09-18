@@ -7,9 +7,9 @@ import java.sql.SQLException;
 public class Conexion {
 
     private static final String URL =
-            "jdbc:postgresql://localhost:5432/peluqueria_db";
+       "jdbc:postgresql://ep-dawn-rice-b4vg56kk-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require&channelBinding=require";
 
-    private static final String USUARIO = "postgres";
+    private static final String USUARIO = "neondb_owner";
 
     private static final String CONTRASENA =
         System.getenv("PELUQUERIA_DB_PASSWORD");
