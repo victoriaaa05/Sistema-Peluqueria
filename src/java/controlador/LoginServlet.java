@@ -1,6 +1,8 @@
+
 package controlador;
 
 import conexion.Conexion;
+import org.mindrot.jbcrypt.BCrypt;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,56 +25,85 @@ public class LoginServlet extends HttpServlet {
                           HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Recibimos los datos de login.html
         String correo = request.getParameter("correo");
         String contrasena = request.getParameter("contrasena");
-        
-        System.out.println("ENTRO AL LOGIN");
-        System.out.println("Correo recibido: " + correo);
 
         String sql = """
-                SELECT id_cliente, nombre, apellido
+                SELECT id_cliente, nombre, apellido, contrasena
                 FROM clientes
-                WHERE correo = ? AND contrasena = ?
+                WHERE correo = ?
                 """;
 
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, correo);
-            ps.setString(2, contrasena);
 
             try (ResultSet rs = ps.executeQuery()) {
 
                 if (rs.next()) {
-                    
-                     HttpSession session = request.getSession();
-                     
-                     session.setAttribute("id_cliente", rs.getInt("id_cliente"));
-                     session.setAttribute("nombre", rs.getString("nombre"));
-                     session.setAttribute("apellido", rs.getString("apellido"));
 
-                    
-                    System.out.println(
-                            "Cliente conectado: "
-                            + rs.getString("nombre")
-                            + " "
-                            + rs.getString("apellido")
-                    );
+                    int idCliente = rs.getInt("id_cliente");
+                    String contrasenaGuardada =
+                            rs.getString("contrasena");
 
-                    response.sendRedirect("cliente.html");
+                    boolean accesoPermitido = false;
 
-                } else {
+                    // Verificar contraseña protegida con BCrypt
+                    if (contrasenaGuardada != null
+                            && contrasenaGuardada.matches(
+                                    "^\\$2[aby]\\$\\d{2}\\$.*")) {
 
-                    // Correo o contraseña incorrectos
-                    response.sendRedirect("login.html?error=1");
+                        accesoPermitido = BCrypt.checkpw(
+                                contrasena, contrasenaGuardada
+                        );
+
+                    } else if (contrasenaGuardada != null
+                            && contrasenaGuardada.equals(contrasena)) {
+
+                        // Compatibilidad temporal con clientes antiguos
+                        accesoPermitido = true;
+
+                        // Convertir contraseña antigua a BCrypt
+                        String hash = BCrypt.hashpw(
+                                contrasena, BCrypt.gensalt(12)
+                        );
+
+                        String actualizar = """
+                                UPDATE clientes
+                                SET contrasena = ?
+                                WHERE id_cliente = ?
+                                """;
+
+                        try (PreparedStatement psActualizar =
+                                con.prepareStatement(actualizar)) {
+
+                            psActualizar.setString(1, hash);
+                            psActualizar.setInt(2, idCliente);
+                            psActualizar.executeUpdate();
+                        }
+                    }
+
+                    if (accesoPermitido) {
+
+                        HttpSession session = request.getSession();
+                        session.setAttribute("id_cliente", idCliente);
+                        session.setAttribute(
+                                "nombre", rs.getString("nombre"));
+                        session.setAttribute(
+                                "apellido", rs.getString("apellido"));
+
+                        response.sendRedirect("cliente.html");
+                        return;
+                    }
                 }
+
+                response.sendRedirect("login.html?error=1");
             }
 
         } catch (SQLException e) {
             throw new ServletException(
-                    "Error al iniciar sesión",
-                    e
+                    "Error al iniciar sesión", e
             );
         }
     }

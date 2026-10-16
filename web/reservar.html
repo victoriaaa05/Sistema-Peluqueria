@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Reservar cita - Peluquería Elegance</title>
+
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">Peluquería Elegance</div>
+
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="cliente.html">Mi cuenta</a>
+        </nav>
+    </header>
+
+    <section class="login">
+        <div class="formulario-login">
+
+            <h1>Reservar cita</h1>
+
+            <p>
+                Elige el servicio, la fecha y la hora
+                de tu próxima visita.
+            </p>
+
+            <form action="ReservarCitaServlet" method="POST">
+
+                <label for="servicio">Servicio</label>
+
+                <select id="servicio"
+                        name="servicio"
+                        required>
+
+                    <option value="">
+                        Selecciona un servicio
+                    </option>
+
+                    <option value="Corte de cabello">
+                        Corte de cabello
+                    </option>
+
+                    <option value="Peinado">
+                        Peinado
+                    </option>
+
+                    <option value="Coloración">
+                        Coloración
+                    </option>
+
+                    <option value="Tratamiento capilar">
+                        Tratamiento capilar
+                    </option>
+
+                    <option value="Manicura">
+                        Manicura
+                    </option>
+
+                </select>
+
+                <label for="fecha">Fecha de la cita</label>
+
+                <input type="date"
+                       id="fecha"
+                       name="fecha"
+                       required>
+
+                <label for="hora">Hora de la cita</label>
+
+                <input type="time"
+                       id="hora"
+                       name="hora"
+                       required>
+
+                <button type="submit" class="btn-login">
+                    Confirmar reserva
+                </button>
+
+            </form>
+
+            <p class="texto-registro">
+                <a href="cliente.html">
+                    Volver a mi cuenta
+                </a>
+            </p>
+
+        </div>
+    </section>
+
+    <script>
+        const fecha = document.getElementById("fecha");
+
+        const hoy = new Date();
+        const anio = hoy.getFullYear();
+        const mes = String(hoy.getMonth() + 1).padStart(2, "0");
+        const dia = String(hoy.getDate()).padStart(2, "0");
+
+        fecha.min = `${anio}-${mes}-${dia}`;
+    </script>
+
+</body>
+</html>

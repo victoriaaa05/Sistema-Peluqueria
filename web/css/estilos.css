@@ -385,3 +385,147 @@ a.btn-secundario {
     margin-bottom: 20px;
     text-align: center;
 }
+.texto-recuperar {
+    text-align: right;
+    margin: 10px 0 20px;
+}
+
+.texto-recuperar a {
+    color: #d9468b;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.texto-recuperar a:hover {
+    text-decoration: underline;
+}
+/* Mensajes de recuperación de contraseña */
+
+.pagina-mensaje {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    box-sizing: border-box;
+}
+
+.tarjeta-mensaje {
+    background-color: white;
+    width: 100%;
+    max-width: 450px;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.tarjeta-mensaje h1 {
+    color: #d94f8a;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.tarjeta-mensaje p {
+    color: #555;
+    font-size: 17px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.boton-mensaje {
+    display: inline-block;
+    background-color: #d94f8a;
+    color: white;
+    text-decoration: none;
+    padding: 13px 28px;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+.boton-mensaje:hover {
+    background-color: #c13d78;
+}
+/* Selector de servicios para reservar citas */
+
+.formulario-login select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: white;
+    color: #444;
+}
+
+.formulario-login select:focus {
+    outline: none;
+    border-color: #d94f8a;
+}
+/* Tarjetas de Mis citas */
+
+.lista-citas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.tarjeta-cita {
+    background-color: white;
+    width: 280px;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+    text-align: left;
+}
+
+.tarjeta-cita h2 {
+    color: #d94f8a;
+    margin-top: 0;
+}
+
+.tarjeta-cita p {
+    color: #555;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+.btn-cancelar {
+    background-color: white;
+    color: #c13d78;
+    border: 2px solid #d94f8a;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.btn-cancelar:hover {
+    background-color: #ffe6ee;
+}
+/* Botón Cerrar sesión */
+
+.form-cerrar-sesion {
+    display: inline;
+    margin: 0;
+}
+
+.enlace-cerrar-sesion {
+    background: none;
+    border: none;
+    color: white;
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 20px;
+    padding: 0;
+}
+
+.enlace-cerrar-sesion:hover {
+    color: #ffd6e7;
+}

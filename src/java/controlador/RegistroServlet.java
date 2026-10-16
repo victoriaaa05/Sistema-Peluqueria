@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.mindrot.jbcrypt.BCrypt;
 
 @WebServlet("/RegistroServlet")
 public class RegistroServlet extends HttpServlet {
@@ -65,7 +66,10 @@ public class RegistroServlet extends HttpServlet {
                 ps.setString(2, apellido);
                 ps.setString(3, telefono);
                 ps.setString(4, correo);
-                ps.setString(5, contrasena);
+                String contrasenaProtegida =
+                        BCrypt.hashpw(contrasena, BCrypt.gensalt(12));
+                
+                ps.setString(5, contrasenaProtegida);
 
                 ps.executeUpdate();
             }
