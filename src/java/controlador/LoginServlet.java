@@ -1,4 +1,3 @@
-
 package controlador;
 
 import conexion.Conexion;
@@ -28,8 +27,15 @@ public class LoginServlet extends HttpServlet {
         String correo = request.getParameter("correo");
         String contrasena = request.getParameter("contrasena");
 
+        if (correo == null || contrasena == null
+                || correo.isBlank() || contrasena.isBlank()) {
+            response.sendRedirect("login.html?error=1");
+            return;
+        }
+
         String sql = """
-                SELECT id_cliente, nombre, apellido, contrasena
+                SELECT id_cliente, nombre, apellido,
+                       contrasena, rol
                 FROM clientes
                 WHERE correo = ?
                 """;
@@ -37,7 +43,7 @@ public class LoginServlet extends HttpServlet {
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, correo);
+            ps.setString(1, correo.trim());
 
             try (ResultSet rs = ps.executeQuery()) {
 
@@ -46,25 +52,28 @@ public class LoginServlet extends HttpServlet {
                     int idCliente = rs.getInt("id_cliente");
                     String contrasenaGuardada =
                             rs.getString("contrasena");
+                    String rol = rs.getString("rol");
 
                     boolean accesoPermitido = false;
 
-                    // Verificar contraseña protegida con BCrypt
                     if (contrasenaGuardada != null
                             && contrasenaGuardada.matches(
                                     "^\\$2[aby]\\$\\d{2}\\$.*")) {
 
-                        accesoPermitido = BCrypt.checkpw(
-                                contrasena, contrasenaGuardada
-                        );
+                        try {
+                            accesoPermitido = BCrypt.checkpw(
+                                    contrasena, contrasenaGuardada
+                            );
+                        } catch (IllegalArgumentException e) {
+                            accesoPermitido = false;
+                        }
 
                     } else if (contrasenaGuardada != null
                             && contrasenaGuardada.equals(contrasena)) {
 
-                        // Compatibilidad temporal con clientes antiguos
                         accesoPermitido = true;
 
-                        // Convertir contraseña antigua a BCrypt
+                        // Migrar contraseña antigua a BCrypt
                         String hash = BCrypt.hashpw(
                                 contrasena, BCrypt.gensalt(12)
                         );
@@ -86,19 +95,42 @@ public class LoginServlet extends HttpServlet {
 
                     if (accesoPermitido) {
 
-                        HttpSession session = request.getSession();
-                        session.setAttribute("id_cliente", idCliente);
+                        // Evitar reutilizar una sesión anterior
+                        HttpSession anterior =
+                                request.getSession(false);
+
+                        if (anterior != null) {
+                            anterior.invalidate();
+                        }
+
+                        HttpSession session =
+                                request.getSession(true);
+
+                        session.setAttribute(
+                                "id_cliente", idCliente);
                         session.setAttribute(
                                 "nombre", rs.getString("nombre"));
                         session.setAttribute(
                                 "apellido", rs.getString("apellido"));
+                        session.setAttribute("rol", rol);
 
-                        response.sendRedirect("cliente.html");
+                        if ("ADMIN".equals(rol)) {
+                            response.sendRedirect(
+                                    request.getContextPath()
+                                    + "/AdminServlet");
+                        } else {
+                            response.sendRedirect(
+                                    request.getContextPath()
+                                    + "/cliente.html");
+                        }
+
                         return;
                     }
                 }
 
-                response.sendRedirect("login.html?error=1");
+                response.sendRedirect(
+                        request.getContextPath()
+                        + "/login.html?error=1");
             }
 
         } catch (SQLException e) {

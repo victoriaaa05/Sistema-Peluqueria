@@ -66,7 +66,8 @@ public class CancelarCitaServlet extends HttpServlet {
             + "WHERE id_cita = ? "
             + "AND id_cliente = ? "
             + "AND estado = 'Pendiente' "
-            + "AND (fecha + hora) > CURRENT_TIMESTAMP";
+            + "AND (fecha + hora) > "
+                + "(CURRENT_TIMESTAMP AT TIME ZONE 'America/Asuncion')";
 
         try (Connection con = Conexion.getConexion();
              PreparedStatement ps =

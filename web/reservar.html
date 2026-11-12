@@ -26,43 +26,26 @@
             <h1>Reservar cita</h1>
 
             <p>
-                Elige el servicio, la fecha y la hora
+                Elegí el servicio, la fecha y la hora
                 de tu próxima visita.
             </p>
 
-            <form action="ReservarCitaServlet" method="POST">
+            <form action="ReservarCitaServlet"
+                  method="POST"
+                  id="formReserva">
 
                 <label for="servicio">Servicio</label>
 
                 <select id="servicio"
                         name="servicio"
-                        required>
-
+                        required disabled>
                     <option value="">
-                        Selecciona un servicio
+                        Cargando servicios...
                     </option>
-
-                    <option value="Corte de cabello">
-                        Corte de cabello
-                    </option>
-
-                    <option value="Peinado">
-                        Peinado
-                    </option>
-
-                    <option value="Coloración">
-                        Coloración
-                    </option>
-
-                    <option value="Tratamiento capilar">
-                        Tratamiento capilar
-                    </option>
-
-                    <option value="Manicura">
-                        Manicura
-                    </option>
-
                 </select>
+
+                <p id="mensajeServicios"
+                   aria-live="polite"></p>
 
                 <label for="fecha">Fecha de la cita</label>
 
@@ -78,7 +61,10 @@
                        name="hora"
                        required>
 
-                <button type="submit" class="btn-login">
+                <button type="submit"
+                        class="btn-login"
+                        id="btnReservar"
+                        disabled>
                     Confirmar reserva
                 </button>
 
@@ -95,13 +81,89 @@
 
     <script>
         const fecha = document.getElementById("fecha");
+        const selectServicio =
+            document.getElementById("servicio");
+        const mensaje =
+            document.getElementById("mensajeServicios");
+        const boton =
+            document.getElementById("btnReservar");
 
         const hoy = new Date();
         const anio = hoy.getFullYear();
-        const mes = String(hoy.getMonth() + 1).padStart(2, "0");
-        const dia = String(hoy.getDate()).padStart(2, "0");
+        const mes = String(hoy.getMonth() + 1)
+            .padStart(2, "0");
+        const dia = String(hoy.getDate())
+            .padStart(2, "0");
 
         fecha.min = `${anio}-${mes}-${dia}`;
+
+        async function cargarServicios() {
+            try {
+                const respuesta = await fetch(
+                    "ServiciosDisponiblesServlet",
+                    { cache: "no-store" }
+                );
+
+                if (respuesta.status === 401) {
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        "No se pudieron cargar los servicios"
+                    );
+                }
+
+                const servicios = await respuesta.json();
+
+                selectServicio.replaceChildren();
+
+                const inicial =
+                    document.createElement("option");
+
+                inicial.value = "";
+                inicial.textContent =
+                    "Seleccioná un servicio";
+
+                selectServicio.appendChild(inicial);
+
+                for (const servicio of servicios) {
+                    const opcion =
+                        document.createElement("option");
+
+                    opcion.value = servicio.nombre;
+                    opcion.textContent =
+                        `${servicio.nombre} - ` +
+                        `${Number(servicio.precio)
+                            .toLocaleString("es-PY")} Gs. ` +
+                        `(${servicio.duracion} min)`;
+
+                    selectServicio.appendChild(opcion);
+                }
+
+                if (servicios.length === 0) {
+                    mensaje.textContent =
+                        "No hay servicios disponibles " +
+                        "en este momento.";
+                    return;
+                }
+
+                selectServicio.disabled = false;
+                boton.disabled = false;
+                mensaje.textContent = "";
+
+            } catch (error) {
+                mensaje.textContent =
+                    "No se pudieron cargar los servicios. " +
+                    "Actualizá la página e intentá de nuevo.";
+
+                selectServicio.disabled = true;
+                boton.disabled = true;
+            }
+        }
+
+        cargarServicios();
     </script>
 
 </body>

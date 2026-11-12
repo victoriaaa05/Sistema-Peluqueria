@@ -10,50 +10,46 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Set;
 
-@WebServlet(
-    name = "ReservarCitaServlet",
-    urlPatterns = {"/ReservarCitaServlet"}
-)
+@WebServlet("/ReservarCitaServlet")
 public class ReservarCitaServlet extends HttpServlet {
 
-    private static final Set<String> SERVICIOS = Set.of(
-        "Corte de cabello",
-        "Peinado",
-        "Coloración",
-        "Tratamiento capilar",
-        "Manicura"
-    );
-
     @Override
-    protected void doPost(
-            HttpServletRequest request,
-            HttpServletResponse response)
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
 
-        // Comprobar que el cliente inició sesión
         HttpSession sesion = request.getSession(false);
 
         if (sesion == null
-                || !(sesion.getAttribute("id_cliente") instanceof Integer)) {
+                || !(sesion.getAttribute("id_cliente")
+                     instanceof Integer)) {
 
             response.sendRedirect(
-                request.getContextPath() + "/login.html"
-            );
+                    request.getContextPath() + "/login.html");
             return;
         }
 
-        int idCliente = (Integer) sesion.getAttribute("id_cliente");
+        if (!"CLIENTE".equals(
+                sesion.getAttribute("rol"))) {
+            response.sendError(403,
+                    "Solo los clientes pueden reservar citas.");
+            return;
+        }
+
+        int idCliente =
+                (Integer) sesion.getAttribute("id_cliente");
 
         String servicio = request.getParameter("servicio");
         String fechaTexto = request.getParameter("fecha");
@@ -62,10 +58,9 @@ public class ReservarCitaServlet extends HttpServlet {
         LocalDate fecha;
         LocalTime hora;
 
-        // Validar los datos recibidos
         try {
-            if (servicio == null || !SERVICIOS.contains(servicio)) {
-                throw new IllegalArgumentException("Servicio inválido.");
+            if (servicio == null || servicio.isBlank()) {
+                throw new IllegalArgumentException();
             }
 
             fecha = LocalDate.parse(fechaTexto);
@@ -76,23 +71,49 @@ public class ReservarCitaServlet extends HttpServlet {
                     && !hora.isAfter(LocalTime.now()))) {
 
                 mostrarMensaje(response,
-                    "Selecciona una fecha y hora futuras.");
+                        "Seleccioná una fecha y hora futuras.");
                 return;
             }
 
         } catch (Exception e) {
             mostrarMensaje(response,
-                "Los datos de la cita no son válidos.");
+                    "Los datos de la cita no son válidos.");
             return;
         }
 
         try (Connection con = Conexion.getConexion()) {
 
-            // Comprobar si el horario está ocupado
-            String verificar =
-                "SELECT id_cita FROM citas "
-                + "WHERE fecha = ? AND hora = ? "
-                + "AND estado <> 'Cancelada'";
+            // Comprobar que el servicio exista y esté activo.
+            String consultarServicio = """
+                    SELECT nombre
+                    FROM public.servicios
+                    WHERE nombre = ?
+                      AND activo = true
+                    """;
+
+            try (PreparedStatement ps =
+                    con.prepareStatement(consultarServicio)) {
+
+                ps.setString(1, servicio);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (!rs.next()) {
+                        mostrarMensaje(response,
+                                "El servicio seleccionado no está "
+                                + "disponible. Elegí otro.");
+                        return;
+                    }
+                }
+            }
+
+            // Verificar disponibilidad del horario.
+            String verificar = """
+                    SELECT id_cita
+                    FROM public.citas
+                    WHERE fecha = ?
+                      AND hora = ?
+                      AND estado <> 'Cancelada'
+                    """;
 
             try (PreparedStatement ps =
                     con.prepareStatement(verificar)) {
@@ -101,21 +122,20 @@ public class ReservarCitaServlet extends HttpServlet {
                 ps.setTime(2, Time.valueOf(hora));
 
                 try (ResultSet rs = ps.executeQuery()) {
-
                     if (rs.next()) {
                         mostrarMensaje(response,
-                            "Ese horario ya está reservado. "
-                            + "Elige otra hora.");
+                                "Ese horario ya está reservado. "
+                                + "Elegí otra hora.");
                         return;
                     }
                 }
             }
 
-            // Guardar la reserva
-            String insertar =
-                "INSERT INTO citas "
-                + "(id_cliente, servicio, fecha, hora) "
-                + "VALUES (?, ?, ?, ?)";
+            String insertar = """
+                    INSERT INTO public.citas
+                        (id_cliente, servicio, fecha, hora)
+                    VALUES (?, ?, ?, ?)
+                    """;
 
             try (PreparedStatement ps =
                     con.prepareStatement(insertar)) {
@@ -129,108 +149,78 @@ public class ReservarCitaServlet extends HttpServlet {
             }
 
             mostrarMensaje(response,
-                "¡Tu cita fue registrada correctamente! "
-                + "Estado: Pendiente.");
+                    "¡Tu cita fue registrada correctamente! "
+                    + "Estado: Pendiente.");
 
-        } catch (java.sql.SQLException e) {
+        } catch (SQLException e) {
 
-    boolean horarioDuplicado = false;
+            if ("23505".equals(e.getSQLState())) {
+                mostrarMensaje(response,
+                        "Ese horario acaba de ser reservado. "
+                        + "Elegí otra hora.");
+            } else {
+                getServletContext().log(
+                        "Error al reservar cita", e);
 
-    if ("23505".equals(e.getSQLState())
-            && e instanceof org.postgresql.util.PSQLException) {
-
-        org.postgresql.util.PSQLException errorPg =
-                (org.postgresql.util.PSQLException) e;
-
-        org.postgresql.util.ServerErrorMessage detalle =
-                errorPg.getServerErrorMessage();
-
-        horarioDuplicado = detalle != null
-                && "idx_citas_horario_ocupado".equals(
-                        detalle.getConstraint());
-    }
-
-    if (horarioDuplicado) {
-
-        mostrarMensaje(response,
-            "Ese horario acaba de ser reservado "
-            + "por otro cliente. Elige otra hora.");
-
-    } else {
-
-        getServletContext().log(
-            "Error de base de datos al reservar cita", e
-        );
-
-        mostrarMensaje(response,
-            "No se pudo registrar la cita. "
-            + "Inténtalo nuevamente.");
-    }
-
-} catch (Exception e) {
-
-    getServletContext().log(
-        "Error al reservar cita", e
-    );
-
-    mostrarMensaje(response,
-        "No se pudo registrar la cita. "
-        + "Inténtalo nuevamente.");
-}
+                mostrarMensaje(response,
+                        "No se pudo registrar la cita. "
+                        + "Intentá nuevamente.");
+            }
+        }
     }
 
     @Override
-    protected void doGet(
-            HttpServletRequest request,
-            HttpServletResponse response)
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
             throws ServletException, IOException {
 
         response.sendRedirect(
-            request.getContextPath() + "/reservar.html"
-        );
+                request.getContextPath() + "/reservar.html");
     }
 
-    private void mostrarMensaje(
-            HttpServletResponse response,
-            String mensaje) throws IOException {
+    private void mostrarMensaje(HttpServletResponse response,
+                                String mensaje)
+            throws IOException {
 
         response.setContentType("text/html;charset=UTF-8");
 
-        try (java.io.PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
 
-            out.println("<!DOCTYPE html>");
-            out.println("<html lang='es'>");
+            out.println("""
+                    <!DOCTYPE html>
+                    <html lang="es">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport"
+                              content="width=device-width,
+                              initial-scale=1.0">
+                        <title>Peluquería Elegance</title>
+                        <link rel="stylesheet"
+                              href="css/estilos.css">
+                    </head>
+                    <body>
+                        <header>
+                            <div class="logo">
+                                Peluquería Elegance
+                            </div>
+                        </header>
+                        <section class="pagina-mensaje">
+                            <div class="tarjeta-mensaje">
+                                <h1>Reserva de cita</h1>
+                    """);
 
-            out.println("<head>");
-            out.println("<meta charset='UTF-8'>");
-            out.println("<meta name='viewport' "
-                    + "content='width=device-width, initial-scale=1.0'>");
-            out.println("<title>Peluquería Elegance</title>");
-            out.println("<link rel='stylesheet' href='css/estilos.css'>");
-            out.println("</head>");
-
-            out.println("<body>");
-
-            out.println("<header>");
-            out.println("<div class='logo'>Peluquería Elegance</div>");
-            out.println("</header>");
-
-            out.println("<section class='pagina-mensaje'>");
-            out.println("<div class='tarjeta-mensaje'>");
-
-            out.println("<h1>Reserva de cita</h1>");
             out.println("<p>" + mensaje + "</p>");
 
-            out.println("<a class='boton-mensaje' "
-                    + "href='cliente.html'>");
-            out.println("Volver a mi cuenta");
-            out.println("</a>");
-
-            out.println("</div>");
-            out.println("</section>");
-
-            out.println("</body>");
-            out.println("</html>");
+            out.println("""
+                                <a class="boton-mensaje"
+                                   href="cliente.html">
+                                    Volver a mi cuenta
+                                </a>
+                            </div>
+                        </section>
+                    </body>
+                    </html>
+                    """);
         }
     }
 }
