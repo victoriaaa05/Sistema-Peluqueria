@@ -1,6 +1,7 @@
 package controlador;
 
 import conexion.Conexion;
+import seguridad.CsrfToken;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -39,8 +40,17 @@ public class CancelarCitaServlet extends HttpServlet {
 
         int idCliente = (Integer) sesion.getAttribute("id_cliente");
 
-        // Obtener el número de la cita
-        int idCita;
+        // Verificar protección CSRF
+        if (!CsrfToken.validar(request)) {
+            response.sendError(
+               HttpServletResponse.SC_FORBIDDEN,
+               "Solicitud no autorizada: token CSRF inválido."
+             );
+             return;
+        }    
+
+// Obtener el número de la cita
+int idCita;
 
         try {
             idCita = Integer.parseInt(

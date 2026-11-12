@@ -1,6 +1,7 @@
 package controlador;
 
 import conexion.Conexion;
+import seguridad.CsrfToken;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -131,14 +132,18 @@ if ("Pendiente".equals(estado)
     out.println("<form action='CancelarCitaServlet' method='POST'>");
 
     out.println("<input type='hidden' name='id_cita' value='"
-            + idCita + "'>");
+        + idCita + "'>");
+    
+    // Token de seguridad CSRF
+    out.println("<input type='hidden' name='csrf_token' value='"
+        + CsrfToken.obtener(sesion) + "'>");
 
+    
     out.println("<button type='submit' class='btn-cancelar' "
             + "onclick=\"return confirm('¿Seguro que deseas cancelar esta cita?');\">");
 
     out.println("Cancelar cita");
     out.println("</button>");
-
     out.println("</form>");
 }
 

@@ -260,7 +260,9 @@ public class AdminServiciosServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws ServletException, IOException {
-
+        
+        request.setCharacterEncoding("UTF-8");
+        
         if (!esAdmin(request)) {
             response.sendError(403, "Acceso solo para administradores");
             return;
@@ -273,7 +275,7 @@ public class AdminServiciosServlet extends HttpServlet {
         return;
         }
 
-        request.setCharacterEncoding("UTF-8");
+        
 
         String accion = request.getParameter("accion");
 

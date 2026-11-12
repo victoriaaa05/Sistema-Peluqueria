@@ -1,6 +1,9 @@
 package controlador;
 
 import conexion.Conexion;
+
+import seguridad.CsrfToken;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,6 +19,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @WebServlet("/AdminCitasServlet")
+//Permite al administrador consultar todas las citas y estados
+
 public class AdminCitasServlet extends HttpServlet {
 
     private boolean esAdmin(HttpServletRequest request) {
@@ -183,12 +188,15 @@ public class AdminCitasServlet extends HttpServlet {
                 out.println("<td>");
 
                 out.println(
-                    "<form method='post' "
+                   "<form method='post' "
                     + "action='AdminCitasServlet'>"
                     + "<input type='hidden' name='id' "
                     + "value='" + id + "'>"
+                    + "<input type='hidden' name='csrf_token' value='"
+                    + CsrfToken.obtener(request.getSession())
+                    + "'>"
                     + "<select name='estado'>"
-                );
+                 );
 
                 String[] estados = {
                     "Pendiente",
@@ -250,6 +258,14 @@ public class AdminCitasServlet extends HttpServlet {
         if (!esAdmin(request)) {
             response.sendError(403,
                     "Acceso solo para administradores");
+            return;
+        }
+        // Verificar token CSRF
+        if (!CsrfToken.validar(request)) {
+            response.sendError(
+               HttpServletResponse.SC_FORBIDDEN,
+               "Solicitud no autorizada: token CSRF inválido."
+            );
             return;
         }
 
