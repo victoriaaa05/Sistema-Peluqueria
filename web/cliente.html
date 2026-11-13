@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mi cuenta - Peluquería Elegance</title>
+
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            Peluquería Elegance
+        </div>
+
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="#">Servicios</a>
+            <form action="CerrarSesionServlet" method="POST" class="form-cerrar-sesion">
+                <button type="submit" class="enlace-cerrar-sesion">
+                    Cerrar sesión
+                </button>
+            </form>
+        </nav>
+    </header>
+
+    <section class="panel-cliente">
+
+    <div class="contenido-cliente">
+
+        <h1>¡Bienvenida!</h1>
+
+        <p>
+            Desde aquí puedes administrar tus citas.
+        </p>
+
+        <div class="opciones-cliente">
+
+            <!-- AGENDAR CITA -->
+            <a href="reservar.html" class="opcion-cliente">
+                <h2>Agendar cita</h2>
+                <p>Reserva tu próxima cita con nosotros.</p>
+            </a>
+
+            <!-- MIS CITAS -->
+            <a href="MisCitasServlet" class="opcion-cliente">
+                <h2>Mis citas</h2>
+                <p>Consulta las citas que tienes agendadas.</p>
+            </a>
+
+        </div>
+
+        <!-- FOTOGRAFÍA DEBAJO DE AMBAS OPCIONES -->
+        <div class="foto-panel-cliente">
+            <img src="img/bienvenida.jpg"
+                 alt="Estilo retro de peluquería">
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

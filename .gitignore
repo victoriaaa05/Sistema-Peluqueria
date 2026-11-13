@@ -1,0 +1,14 @@
+# Credenciales
+.env
+.env.*
+*.secret
+*.key
+*.pem
+# NetBeans y Java
+build/
+dist/
+target/
+nbproject/private/
+*.class
+# macOS
+.DS_Store

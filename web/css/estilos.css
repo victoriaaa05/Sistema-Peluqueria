@@ -1,0 +1,1031 @@
+body {
+    background-color: #fff5f8;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+header {
+    background-color: #d94f8a;
+    color: white;
+    padding: 20px 40px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+nav a:hover {
+      color: #ffd6e7;
+}
+.bienvenida {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.bienvenida h1 {
+    font-size: 40px;
+    color: #d94f8a;
+    margin-bottom: 15px;
+}
+
+.bienvenida p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.btn-cita {
+    background-color: #d94f8a;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    font-size: 17px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.btn-cita:hover {
+    background-color: #c13d78;
+}
+.acceso {
+    background-color: white;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.acceso h2 {
+    color: #d94f8a;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.acceso p {
+    color: #555;
+    font-size: 17px;
+    margin-bottom: 25px;
+}
+
+.botones-acceso {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-principal,
+.btn-secundario {
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.btn-principal {
+    background-color: #d94f8a;
+    color: white;
+    border: 2px solid #d94f8a;
+}
+
+.btn-secundario {
+    background-color: white;
+    color: #d94f8a;
+    border: 2px solid #d94f8a;
+}
+
+.btn-principal:hover {
+    background-color: #c13d78;
+}
+
+.btn-secundario:hover {
+    background-color: #fff0f5;
+}
+.servicios {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.servicios h2 {
+    color: #d94f8a;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.subtitulo-servicios {
+    color: #666;
+    font-size: 17px;
+    margin-bottom: 35px;
+}
+
+.contenedor-servicios {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.tarjeta-servicio {
+    background-color: white;
+    width: 220px;
+    padding: 30px 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+}
+
+.tarjeta-servicio h3 {
+    color: #d94f8a;
+    margin-bottom: 15px;
+}
+
+.tarjeta-servicio p {
+    color: #555;
+    line-height: 1.5;
+}
+/* Página de registro */
+.registro {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+/* Caja del formulario */
+.formulario-registro {
+    background-color: white;
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+}
+
+/* Título */
+.formulario-registro h1 {
+    color: #d94f8a;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* Texto debajo del título */
+.formulario-registro > p {
+    color: #666;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Etiquetas */
+.formulario-registro label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+    color: #444;
+}
+
+/* Campos */
+.formulario-registro input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Cuando hacemos clic en un campo */
+.formulario-registro input:focus {
+    outline: none;
+    border-color: #d94f8a;
+}
+
+/* Botón Registrarme */
+.btn-registro {
+    width: 100%;
+    background-color: #d94f8a;
+    color: white;
+    border: none;
+    padding: 13px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-registro:hover {
+    background-color: #c13d78;
+}
+a.btn-secundario {
+    text-decoration: none;
+}
+/* Página de inicio de sesión */
+
+.login {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+.formulario-login {
+    background-color: white;
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+}
+
+.formulario-login h1 {
+    color: #d94f8a;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.formulario-login > p {
+    color: #666;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.formulario-login label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+    color: #444;
+}
+
+.formulario-login input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.formulario-login input:focus {
+    outline: none;
+    border-color: #d94f8a;
+}
+
+.btn-login {
+    width: 100%;
+    background-color: #d94f8a;
+    color: white;
+    border: none;
+    padding: 13px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background-color: #c13d78;
+}
+
+.texto-registro a {
+    color: #d94f8a;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.panel-cliente {
+    min-height: 75vh;
+    background-color: #fff5f8;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.contenido-cliente {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.contenido-cliente h1 {
+    color: #d94f8a;
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.contenido-cliente > p {
+    color: #555;
+    font-size: 18px;
+    margin-bottom: 45px;
+}
+
+
+/* Contenedor de las opciones */
+
+.opciones-cliente {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+
+/* Tarjetas */
+
+.opcion-cliente {
+    width: 280px;
+    background-color: white;
+    padding: 35px 25px;
+    border-radius: 15px;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+    transition: 0.3s;
+}
+
+.opcion-cliente h2 {
+    color: #d94f8a;
+    margin-bottom: 15px;
+}
+
+.opcion-cliente p {
+    color: #555;
+    line-height: 1.5;
+}
+
+
+/* Efecto al pasar el mouse */
+
+.opcion-cliente:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(217, 79, 138, 0.20);
+}
+.mensaje-error {
+    background-color: #ffe5ec;
+    color: #c2185b;
+    border: 1px solid #f3a6c1;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+}
+.mensaje-error {
+    background-color: #ffe6ee;
+    border: 1px solid #dc4b87;
+    color: #b52d65;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.texto-recuperar {
+    text-align: right;
+    margin: 10px 0 20px;
+}
+
+.texto-recuperar a {
+    color: #d9468b;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.texto-recuperar a:hover {
+    text-decoration: underline;
+}
+/* Mensajes de recuperación de contraseña */
+
+.pagina-mensaje {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    box-sizing: border-box;
+}
+
+.tarjeta-mensaje {
+    background-color: white;
+    width: 100%;
+    max-width: 450px;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.tarjeta-mensaje h1 {
+    color: #d94f8a;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.tarjeta-mensaje p {
+    color: #555;
+    font-size: 17px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.boton-mensaje {
+    display: inline-block;
+    background-color: #d94f8a;
+    color: white;
+    text-decoration: none;
+    padding: 13px 28px;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+.boton-mensaje:hover {
+    background-color: #c13d78;
+}
+/* Selector de servicios para reservar citas */
+
+.formulario-login select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: white;
+    color: #444;
+}
+
+.formulario-login select:focus {
+    outline: none;
+    border-color: #d94f8a;
+}
+/* Tarjetas de Mis citas */
+
+.lista-citas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.tarjeta-cita {
+    background-color: white;
+    width: 280px;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+    text-align: left;
+}
+
+.tarjeta-cita h2 {
+    color: #d94f8a;
+    margin-top: 0;
+}
+
+.tarjeta-cita p {
+    color: #555;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+.btn-cancelar {
+    background-color: white;
+    color: #c13d78;
+    border: 2px solid #d94f8a;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.btn-cancelar:hover {
+    background-color: #ffe6ee;
+}
+/* Botón Cerrar sesión */
+
+.form-cerrar-sesion {
+    display: inline;
+    margin: 0;
+}
+
+.enlace-cerrar-sesion {
+    background: none;
+    border: none;
+    color: white;
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 20px;
+    padding: 0;
+}
+
+.enlace-cerrar-sesion:hover {
+    color: #ffd6e7;
+}
+
+/* Calendario visual para reservar citas   */
+
+
+.calendario {
+    border: 1px solid #f3c1d6;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 12px;
+}
+
+.calendario-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.calendario-mes {
+    font-weight: bold;
+    color: #d94f8a;
+    font-size: 17px;
+}
+
+.calendario-flecha {
+    background: none;
+    border: none;
+    color: #d94f8a;
+    font-size: 28px;
+    line-height: 1;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.calendario-flecha:hover:not(:disabled) {
+    background-color: #fff0f5;
+}
+
+.calendario-flecha:disabled {
+    color: #ddd;
+    cursor: default;
+}
+
+.calendario-semana,
+.calendario-dias {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 4px;
+    text-align: center;
+}
+
+.calendario-semana span {
+    font-size: 13px;
+    font-weight: bold;
+    color: #999;
+    padding: 5px 0;
+}
+
+.dia {
+    width: 100%;
+    max-width: 44px;
+    justify-self: center;
+    aspect-ratio: 1;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: #fff0f5;
+    color: #444;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.dia:hover:not(:disabled) {
+    background-color: #f8c9dc;
+}
+
+.dia:disabled {
+    background: none;
+    color: #ccc;
+    cursor: default;
+}
+
+.dia-hoy {
+    font-weight: bold;
+    box-shadow: inset 0 0 0 2px #f3a6c1;
+}
+
+.dia.dia-seleccionado,
+.dia.dia-seleccionado:hover {
+    background-color: #d94f8a;
+    color: white;
+}
+
+.nota-horario {
+    color: #888;
+    font-size: 13px;
+    text-align: center;
+    margin: 10px 0 0;
+}
+/* ====================================== */
+/* Horarios visuales para reservar citas  */
+/* ====================================== */
+
+.lista-horarios {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.horario {
+    padding: 12px 6px;
+    border: 2px solid #f3c1d6;
+    border-radius: 10px;
+    background-color: white;
+    color: #c13d78;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.horario:hover:not(:disabled) {
+    background-color: #fff0f5;
+}
+
+.horario.horario-seleccionado {
+    background-color: #d94f8a;
+    border-color: #d94f8a;
+    color: white;
+}
+
+.horario:focus-visible {
+    outline: 2px solid #c13d78;
+    outline-offset: 2px;
+}
+
+.horario:disabled {
+    color: #ccc;
+    border-color: #eee;
+    cursor: not-allowed;
+}
+
+@media (max-width: 400px) {
+    .lista-horarios {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+#horarioSeleccionado {
+    margin: 18px 0 24px;
+    text-align: center;
+    color: #c13d78;
+    font-weight: 500;
+}
+
+/* Foto de la portada */
+
+.imagen-portada {
+    max-width: 950px;
+    margin: 35px auto;
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+.imagen-portada img {
+    display: block;
+    width: 100%;
+    height: 900px;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+.imagen-portada img:hover {
+    transform: scale(1.03);
+}
+
+
+/* SECCIÓN ACCESO - ESTILO RETRO EDITORIAL */
+
+.acceso-editorial {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 45px;
+
+    max-width: 1100px;
+    margin: 70px auto;
+    padding: 35px;
+
+    background-color: #fce4ed;
+    border-radius: 18px;
+}
+
+.acceso-imagen {
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.acceso-imagen img {
+    display: block;
+    width: 100%;
+    height: 440px;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.4s ease;
+}
+
+.acceso-imagen img:hover {
+    transform: scale(1.04);
+}
+
+.acceso-contenido {
+    text-align: left;
+}
+
+.acceso-contenido h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(32px, 4vw, 48px);
+    color: #2c1c24;
+    margin-bottom: 20px;
+}
+
+.acceso-contenido p {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #604650;
+    margin-bottom: 30px;
+}
+
+.acceso-contenido .botones-acceso {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Adaptación para celulares */
+
+@media (max-width: 768px) {
+
+    .acceso-editorial {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 20px;
+        margin: 35px 15px;
+    }
+
+    .acceso-imagen img {
+        height: 320px;
+    }
+
+    .acceso-contenido {
+        text-align: center;
+    }
+
+    .acceso-contenido .botones-acceso {
+        justify-content: center;
+    }
+}
+
+/* ====================================== */
+/* SERVICIOS - ESTILO EDITORIAL RETRO      */
+/* ====================================== */
+
+.servicios-editorial {
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 45px 25px;
+    text-align: center;
+}
+
+.subtitulo-editorial {
+    color: #b83272;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+
+.servicios-editorial h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(34px, 5vw, 56px);
+    color: #2c1c24;
+    margin-bottom: 12px;
+}
+
+.descripcion-servicios {
+    color: #785762;
+    font-size: 17px;
+    margin-bottom: 40px;
+}
+
+.galeria-servicios {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 25px;
+}
+
+.tarjeta-editorial {
+    text-align: left;
+}
+
+.foto-servicio {
+    overflow: hidden;
+    background: #fce4ed;
+}
+
+.foto-servicio img {
+    display: block;
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.tarjeta-editorial:hover img {
+    transform: scale(1.05);
+}
+
+.numero-servicio {
+    display: block;
+    margin-top: 18px;
+    color: #b83272;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.tarjeta-editorial h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 26px;
+    color: #2c1c24;
+    margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+    .galeria-servicios {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .foto-servicio img {
+        height: 420px;
+    }
+
+    .servicios-editorial {
+        margin: 40px auto;
+        padding: 30px 20px;
+    }
+}
+/* FOTO RETRO - PANEL DEL CLIENTE */
+
+.foto-panel-cliente {
+    width: 90%;
+    max-width: 280px;
+    margin: 35px auto 20px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.foto-panel-cliente img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* PANEL ADMIN - ESTILO EDITORIAL */
+
+.admin-diseno {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    align-items: center;
+    gap: 30px;
+    max-width: 1100px;
+    margin: 35px auto;
+}
+
+.admin-imagen img {
+    display: block;
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.admin-opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* Botones grandes del administrador */
+
+.admin-opciones a,
+.admin-opciones button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 105px;
+    box-sizing: border-box;
+    padding: 22px;
+    background: #f9dce8;
+    color: #7c2852;
+    border: none;
+    border-radius: 16px;
+    font-size: 22px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.admin-opciones a:hover,
+.admin-opciones button:hover {
+    background: #efb9d1;
+    transform: translateY(-3px);
+}
+
+/* Adaptación a celulares */
+
+@media (max-width: 768px) {
+    .admin-diseno {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .admin-imagen {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .admin-opciones a,
+    .admin-opciones button {
+        min-height: 85px;
+        font-size: 18px;
+    }
+}
+
+/* RESERVAS - FASHION    */
+
+.reserva-editorial {
+    width: 100%;
+    max-width: 1450px;
+    margin: 40px auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.reserva-diseno {
+    display: grid;
+    grid-template-columns: 420px minmax(0, 1fr);
+    align-items: start;
+    gap: 35px;
+    width: 100%;
+}
+
+/* Imagen FASHION a la izquierda */
+
+.reserva-imagen {
+    width: 100%;
+    position: sticky;
+    top: 25px;
+}
+
+.reserva-imagen img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); 
+}
+
+/* Formulario de reserva a la derecha */
+
+.reserva-diseno .formulario-login {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* TÍTULO EDITORIAL DE LA PORTADA */
+
+.bienvenida h1 {
+    font-family: "Bodoni MT", "Didot", "Times New Roman", serif;
+    font-size: clamp(38px, 5vw, 70px);
+    font-weight: 400;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    color: #24151e;
+    text-align: center;
+    max-width: 1050px;
+    margin: 0 auto 22px;
+}

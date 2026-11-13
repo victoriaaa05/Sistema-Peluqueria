@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Reservar cita - Peluquería Elegance</title>
+
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">Peluquería Elegance</div>
+
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="cliente.html">Mi cuenta</a>
+        </nav>
+    </header>
+
+    <section class="login reserva-editorial">
+
+    <div class="reserva-diseno">
+
+        <!-- IMAGEN FASHION A LA IZQUIERDA -->
+        <div class="reserva-imagen">
+            <img src="img/fashion.jpg"
+                 alt="Diseño editorial FASHION">
+        </div>
+
+        <!-- FORMULARIO A LA DERECHA -->
+        <div class="formulario-login"> 
+
+            <h1>Reservar cita</h1>
+
+            <p>
+                Elegí el servicio, la fecha y la hora
+                de tu próxima visita.
+            </p>
+
+            <form action="ReservarCitaServlet"
+                  method="POST"
+                  id="formReserva">
+
+                <label for="servicio">Servicio</label>
+
+                <select id="servicio"
+                        name="servicio"
+                        required disabled>
+                    <option value="">
+                        Cargando servicios...
+                    </option>
+                </select>
+
+                <p id="mensajeServicios"
+                   aria-live="polite"></p>
+
+                <label for="fecha">Fecha de la cita</label>
+
+                <input type="date"
+                       id="fecha"
+                       name="fecha"
+                       required>
+
+<div class="calendario" id="calendarioVisual">
+
+    <div class="calendario-cabecera">
+        <button type="button"
+                class="calendario-flecha"
+                id="mesAnterior"
+                aria-label="Mes anterior">
+            &#10094;
+        </button>
+
+        <span class="calendario-mes" id="calendarioMes"></span>
+
+        <button type="button"
+                class="calendario-flecha"
+                id="mesSiguiente"
+                aria-label="Mes siguiente">
+            &#10095;
+        </button>
+    </div>
+
+    <div class="calendario-semana">
+        <span>L</span>
+        <span>M</span>
+        <span>M</span>
+        <span>J</span>
+        <span>V</span>
+        <span>S</span>
+        <span>D</span>
+    </div>
+
+    <div class="calendario-dias" id="calendarioDias"></div>
+
+    <p class="nota-horario">
+        Seleccioná el día de tu próxima cita.
+    </p>
+</div>
+                <label for="hora">Hora de la cita</label>
+
+<!-- Campo que enviará la hora al servlet -->
+<input type="hidden"
+       id="hora"
+       name="hora"
+       value="">
+
+<!-- Selector visual de horarios -->
+<div class="lista-horarios" id="listaHorarios">
+
+    <button type="button" class="horario" data-hora="09:00">09:00</button>
+    <button type="button" class="horario" data-hora="10:00">10:00</button>
+    <button type="button" class="horario" data-hora="11:00">11:00</button>
+    <button type="button" class="horario" data-hora="13:00">13:00</button>
+    <button type="button" class="horario" data-hora="14:00">14:00</button>
+    <button type="button" class="horario" data-hora="15:00">15:00</button>
+    <button type="button" class="horario" data-hora="16:00">16:00</button>
+    <button type="button" class="horario" data-hora="17:00">17:00</button>
+    <button type="button" class="horario" data-hora="18:00">18:00</button>
+
+</div>
+
+<p class="nota-horario" id="horarioSeleccionado"
+   aria-live="polite">
+    Seleccioná un horario para continuar.
+</p>
+
+                <button type="submit"
+                        class="btn-login"
+                        id="btnReservar"
+                        disabled>
+                    Confirmar reserva
+                </button>
+
+            </form>
+
+                        <p class="texto-registro">
+                <a href="cliente.html">
+                    Volver a mi cuenta
+                </a>
+            </p>
+
+        </div> <!-- Cierra formulario-login -->
+
+    </div> <!-- Cierra reserva-diseno -->
+
+</section>
+
+<script>
+        const fecha = document.getElementById("fecha");
+        const selectServicio =
+            document.getElementById("servicio");
+        const mensaje =
+            document.getElementById("mensajeServicios");
+        const boton =
+            document.getElementById("btnReservar");
+
+        const hoy = new Date();
+        const anio = hoy.getFullYear();
+        const mes = String(hoy.getMonth() + 1)
+            .padStart(2, "0");
+        const dia = String(hoy.getDate())
+            .padStart(2, "0");
+
+        fecha.min = `${anio}-${mes}-${dia}`;
+
+        async function cargarServicios() {
+            try {
+                const respuesta = await fetch(
+                    "ServiciosDisponiblesServlet",
+                    { cache: "no-store" }
+                );
+
+                if (respuesta.status === 401) {
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        "No se pudieron cargar los servicios"
+                    );
+                }
+
+                const servicios = await respuesta.json();
+
+                selectServicio.replaceChildren();
+
+                const inicial =
+                    document.createElement("option");
+
+                inicial.value = "";
+                inicial.textContent =
+                    "Seleccioná un servicio";
+
+                selectServicio.appendChild(inicial);
+
+                for (const servicio of servicios) {
+                    const opcion =
+                        document.createElement("option");
+
+                    opcion.value = servicio.nombre;
+                    opcion.textContent =
+                        `${servicio.nombre} - ` +
+                        `${Number(servicio.precio)
+                            .toLocaleString("es-PY")} Gs. ` +
+                        `(${servicio.duracion} min)`;
+
+                    selectServicio.appendChild(opcion);
+                }
+
+                if (servicios.length === 0) {
+                    mensaje.textContent =
+                        "No hay servicios disponibles " +
+                        "en este momento.";
+                    return;
+                }
+
+                selectServicio.disabled = false;
+                boton.disabled = false;
+                mensaje.textContent = "";
+
+            } catch (error) {
+                mensaje.textContent =
+                    "No se pudieron cargar los servicios. " +
+                    "Actualizá la página e intentá de nuevo.";
+
+                selectServicio.disabled = true;
+                boton.disabled = true;
+            }
+        }
+
+        cargarServicios();
+// Calendario visual de reservas
+
+const calendarioMes = document.getElementById("calendarioMes");
+const calendarioDias = document.getElementById("calendarioDias");
+const mesAnterior = document.getElementById("mesAnterior");
+const mesSiguiente = document.getElementById("mesSiguiente");
+
+// Fecha actual, sin horas
+const fechaActual = new Date();
+fechaActual.setHours(0, 0, 0, 0);
+
+// Mes que estamos mostrando
+let mesVisible = new Date(
+    fechaActual.getFullYear(),
+    fechaActual.getMonth(),
+    1
+);
+
+const nombresMeses = [
+    "Enero", "Febrero", "Marzo", "Abril",
+    "Mayo", "Junio", "Julio", "Agosto",
+    "Septiembre", "Octubre", "Noviembre",
+    "Diciembre"
+];
+
+// Convertir una fecha al formato YYYY-MM-DD
+function formatoFecha(fechaElegida) {
+    const anio = fechaElegida.getFullYear();
+    const mes = String(fechaElegida.getMonth() + 1)
+        .padStart(2, "0");
+    const dia = String(fechaElegida.getDate())
+        .padStart(2, "0");
+
+    return `${anio}-${mes}-${dia}`;
+}
+
+function mostrarCalendario() {
+
+    calendarioDias.innerHTML = "";
+
+    const anio = mesVisible.getFullYear();
+    const mes = mesVisible.getMonth();
+
+    calendarioMes.textContent =
+        `${nombresMeses[mes]} ${anio}`;
+
+    // Lunes como primer día de la semana
+    const primerDia = new Date(anio, mes, 1);
+    const inicioSemana = (primerDia.getDay() + 6) % 7;
+
+    const cantidadDias =
+        new Date(anio, mes + 1, 0).getDate();
+
+    // Espacios vacíos antes del primer día
+    for (let i = 0; i < inicioSemana; i++) {
+        const espacio = document.createElement("span");
+        calendarioDias.appendChild(espacio);
+    }
+
+    // Crear los botones de cada día
+    for (let dia = 1; dia <= cantidadDias; dia++) {
+
+        const fechaDia = new Date(anio, mes, dia);
+
+        const botonDia = document.createElement("button");
+
+        botonDia.type = "button";
+        botonDia.className = "dia";
+        botonDia.textContent = dia;
+
+        const valorFecha = formatoFecha(fechaDia);
+
+        botonDia.setAttribute(
+            "aria-label",
+            `Seleccionar ${dia} de ${nombresMeses[mes]} de ${anio}`
+        );
+
+        // No permitir fechas pasadas
+        if (fechaDia < fechaActual) {
+            botonDia.disabled = true;
+        }
+
+        // Marcar el día actual
+        if (fechaDia.getTime() === fechaActual.getTime()) {
+            botonDia.classList.add("dia-hoy");
+        }
+
+        // Marcar el día seleccionado
+        if (fecha.value === valorFecha) {
+            botonDia.classList.add("dia-seleccionado");
+            botonDia.setAttribute("aria-pressed", "true");
+        } else {
+            botonDia.setAttribute("aria-pressed", "false");
+        }
+
+        botonDia.addEventListener("click", function () {
+
+            // Actualizar el campo original del formulario
+            fecha.value = valorFecha;
+
+            // Avisar que cambió la fecha
+            fecha.dispatchEvent(
+                new Event("change", { bubbles: true })
+            );
+
+            // Actualizar el diseño visual
+            mostrarCalendario();
+        });
+
+        calendarioDias.appendChild(botonDia);
+    }
+
+    // Deshabilitar retroceso a meses pasados
+    mesAnterior.disabled =
+        anio === fechaActual.getFullYear() &&
+        mes === fechaActual.getMonth();
+}
+
+// Ir al mes anterior
+mesAnterior.addEventListener("click", function () {
+    mesVisible.setMonth(mesVisible.getMonth() - 1);
+    mostrarCalendario();
+});
+
+// Ir al mes siguiente
+mesSiguiente.addEventListener("click", function () {
+    mesVisible.setMonth(mesVisible.getMonth() + 1);
+    mostrarCalendario();
+});
+
+// Sincronizar si la clienta usa el campo de fecha original
+fecha.addEventListener("change", function () {
+
+    if (fecha.value) {
+        const partes = fecha.value.split("-");
+
+        mesVisible = new Date(
+            Number(partes[0]),
+            Number(partes[1]) - 1,
+            1
+        );
+    }
+
+    mostrarCalendario();
+});
+
+// Mostrar el calendario al cargar la página
+mostrarCalendario();
+
+// Selección de horarios
+
+
+const campoHora = document.getElementById("hora");
+
+const botonesHorario =
+    document.querySelectorAll(".horario");
+
+const textoHorario =
+    document.getElementById("horarioSeleccionado");
+
+// Deshabilitar horarios pasados para el día de hoy
+function actualizarHorarios() {
+
+    const ahora = new Date();
+
+    const anio = ahora.getFullYear();
+    const mes = String(ahora.getMonth() + 1).padStart(2, "0");
+    const dia = String(ahora.getDate()).padStart(2, "0");
+
+    const fechaHoy = `${anio}-${mes}-${dia}`;
+
+    const horaActual =
+        String(ahora.getHours()).padStart(2, "0") + ":" +
+        String(ahora.getMinutes()).padStart(2, "0");
+
+    botonesHorario.forEach(function (botonHorario) {
+
+        const horaBoton = botonHorario.dataset.hora;
+
+        const esHoraPasada =
+            fecha.value === fechaHoy &&
+            horaBoton <= horaActual;
+
+        botonHorario.disabled = esHoraPasada;
+
+        // Quitar una selección que ya no sea válida
+        if (esHoraPasada && campoHora.value === horaBoton) {
+
+            campoHora.value = "";
+
+            botonHorario.classList.remove(
+                "horario-seleccionado"
+            );
+
+            botonHorario.setAttribute("aria-pressed", "false");
+
+            textoHorario.textContent =
+                "Seleccioná un horario disponible.";
+        }
+    });
+}
+
+botonesHorario.forEach(function (botonHorario) {
+
+    botonHorario.addEventListener("click", function () {
+
+        // Quitar la selección anterior
+        botonesHorario.forEach(function (otroBoton) {
+            otroBoton.classList.remove("horario-seleccionado");
+            otroBoton.setAttribute("aria-pressed", "false");
+        });
+
+        // Seleccionar el horario elegido
+        botonHorario.classList.add("horario-seleccionado");
+        botonHorario.setAttribute("aria-pressed", "true");
+
+        // Guardar la hora para enviarla al servlet
+        campoHora.value = botonHorario.dataset.hora;
+
+        textoHorario.textContent =
+            "Horario seleccionado: " + campoHora.value;
+    });
+
+});
+
+// Evitar enviar una reserva sin elegir hora
+document.getElementById("formReserva")
+    .addEventListener("submit", function (evento) {
+
+        if (!campoHora.value) {
+            evento.preventDefault();
+            alert("Por favor, seleccioná un horario.");
+        }
+    });
+    // Actualizar horarios cuando cambia la fecha
+fecha.addEventListener("change", actualizarHorarios);
+
+// Revisar los horarios al abrir la página
+actualizarHorarios();
+
+    </script>
+
+</body>
+</html>
